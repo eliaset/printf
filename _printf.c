@@ -1,51 +1,82 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "main.h"
-/**
- * _printf - printf function
- * @format: structure format
- * Return:the number
- */
+#include <stdlib.h>
 
+/**
+ * check_for_specifiers - checks if there is a valid format specifier
+ * @format: possible format specifier
+ *
+ * Return: pointer to valid function or NULL
+ */
+static int (*check_for_specifiers(const char *format))(va_list)
+{
+	unsigned int i;
+	print_t p[] = {
+		{"c", print_c},
+		{"s", print_s},
+		{"i", print_i},
+		{"d", print_d},
+		{"u", print_u},
+		{"b", print_b},
+		{"o", print_o},
+		{"x", print_x},
+		{"X", print_X},
+		{"p", print_p},
+		{"S", print_S},
+		{"r", print_r},
+		{"R", print_R},
+		{NULL, NULL}
+	};
+
+	for (i = 0; p[i].t != NULL; i++)
+	{
+		if (*(p[i].t) == *format)
+		{
+			break;
+		}
+	}
+	return (p[i].f);
+}
+
+/**
+ * _printf - prints anything
+ * @format: list of argument types passed to the function
+ *
+ * Return: number of characters printed
+ */
 int _printf(const char *format, ...)
 {
-	va_list ap;
-	unsigned int i, j, flag;
-	unsigned int l = 0;
-	pt_t pt[] = { {"c", print_c}, {"s", print_s}, {"d", print_d},
-			{"i", print_i}, {NULL, NULL}};
-	va_start(ap, format);
-	if (format == NULL || (format[0] == '%' && format[1] == '\0'))
-		return (0);
-	i = 0;
-	while (format[i] != '\0')
+	unsigned int i = 0, count = 0;
+	va_list valist;
+	int (*f)(va_list);
+
+	if (format == NULL)
+		return (-1);
+	va_start(valist, format);
+	while (format[i])
 	{
-		if (format[i] == '%' && format[i + 1] != '%')
+		for (; format[i] != '%' && format[i]; i++)
 		{
-			j = 0, flag = 0;
-			while (pt[j].print != NULL)
-			{
-				if (format[i + 1] == pt[j].pt[0])
-				{
-					l = l + pt[j].print(ap);
-					flag = 1, i++;
-				} j++;
+			_putchar(format[i]);
+			count++;
 		}
-		if (flag == 0)
+		if (!format[i])
+			return (count);
+		f = check_for_specifiers(&format[i + 1]);
+		if (f != NULL)
 		{
-			_putchar(format[i]), l = l + 1;
+			count += f(valist);
+			i += 2;
+			continue;
 		}
+		if (!format[i + 1])
+			return (-1);
+		_putchar(format[i]);
+		count++;
+		if (format[i + 1] == '%')
+			i += 2;
+		else
+			i++;
 	}
-	else if (format[i] == '%' && format[i + 1] == '%')
-	{
-		_putchar('%'), i++;
-		l = l + 1;
-	}
-	else
-	{
-		_putchar(format[i]), l = l + 1;
-	} i++;
-	}
-	va_end(ap);
-	return (l);
+	va_end(valist);
+	return (count);
 }
