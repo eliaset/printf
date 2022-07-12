@@ -13,22 +13,6 @@ int print_c(va_list c)
 
 	return (1);
 }
-/**
- * print_pe - prints percent sign
- * @args: percent sign
- *
- * Return: number of character printed
- * in this case, return value will always be 1
- */
-
-int print_pe(va_list __attribute__((unused)) pe)
-{
-	char perc = '%';
-
-	_putchar(perc);
-
-	return (1);
-}
 
 /**
  * print_s - function that prints a string
