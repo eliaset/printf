@@ -6,9 +6,12 @@
  * @c: char of variable
  * Return: number of characters printed
  */
+
 int print_c(va_list c)
 {
-	_putchar(va_arg(c, int));
+	char ch = va_arg(c, int);
+
+	_putchar(ch);
 
 	return (1);
 }
