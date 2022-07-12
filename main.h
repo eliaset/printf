@@ -25,6 +25,6 @@ int print_s(va_list s);
 int print_c(va_list c);
 int print_i(va_list in);
 int print_d(va_list d);
-
+int print_pe(va_list __attribute__((unused)) pe);
 
 #endif
