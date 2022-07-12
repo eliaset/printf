@@ -2,39 +2,58 @@
 #include <stdlib.h>
 
 /**
- * print_c - prints a char
- * @c: char to print
- *
- * Return: always 1
+ * print_c - function that prints a character
+ * @c: char of variable
+ * Return: number of characters printed
  */
+
 int print_c(va_list c)
 {
-	char ch = (char)va_arg(c, int);
+	_putchar(va_arg(c, int));
 
-	_putchar(ch);
+	return (1);
+}
+/**
+ * print_pe - prints percent sign
+ * @args: percent sign
+ *
+ * Return: number of character printed
+ * in this case, return value will always be 1
+ */
+
+int print_pe(va_list __attribute__((unused)) pe)
+{
+	char perc = '%';
+
+	_putchar(perc);
+
 	return (1);
 }
 
 /**
- * print_s - prints a string
- * @s: string to print
- *
- * Return: number of chars printed
+ * print_s - function that prints a string
+ * @s: operator and pointer
+ * Return: number of characters printed
  */
-int print_s(va_list s)
-{
-	int count;
-	char *str = va_arg(s, char *);
 
+int print_s(va_list s)
+
+{
+	unsigned int i;
+	char *str;
+
+	str = va_arg(s, char *);
+	i = 0;
 	if (str == NULL)
 		str = "(null)";
-	for (count = 0; str[count]; count++)
-	{
-		_putchar(str[count]);
-	}
-	return (count);
-}
 
+	while (str[i] != '\0')
+	{
+		_putchar (str[i]);
+		i++;
+	}
+		return (i);
+}
 /**
  * hex_print - prints a char's ascii value in uppercase hex
  * @c: char to print
